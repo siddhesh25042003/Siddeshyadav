@@ -1,29 +1,48 @@
--- phpMyAdmin SQL Dump
--- version 5.2.1
--- https://www.phpmyadmin.net/
---
--- Host: 127.0.0.1
--- Generation Time: Jul 11, 2024 at 11:42 AM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+CREATE DATABASE dynamic_slider;
+USE dynamic_slider;
+CREATE TABLE users (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  name VARCHAR(50) NOT NULL,
+  username VARCHAR(50) NOT NULL,
+  password VARCHAR(255) NOT NULL
+);
 
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-START TRANSACTION;
-SET time_zone = "+00:00";
+CREATE TABLE images (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  user_id INT NOT NULL,
+  title VARCHAR(100) NOT NULL,
+  image_url VARCHAR(255) NOT NULL,
+  FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+ALTER TABLE users MODIFY COLUMN name VARCHAR(50) DEFAULT NULL;
+drop table images;
+
+CREATE TABLE categories (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  name VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE slider_images (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  image_id INT NOT NULL,
+  category_id INT NOT NULL,
+  FOREIGN KEY (image_id) REFERENCES images(id),
+  FOREIGN KEY (category_id) REFERENCES categories(id)
+);
+
+ALTER TABLE images ADD COLUMN image_url VARCHAR(255);
+ALTER TABLE images ADD COLUMN image_path VARCHAR(255) NOT NULL;
+
+select * from users;
 
 
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
+CREATE USER 'root'@'localhost' IDENTIFIED BY '12345678';
 
---
--- Database: `test`
---
-CREATE DATABASE IF NOT EXISTS `test` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
-USE `test`;
-COMMIT;
+SELECT user, host FROM mysql.user WHERE user = 'dynamic_slider';
 
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+#Syntax: SELECT user, host FROM mysql.user;
+
+
+GRANT ALL PRIVILEGES ON . TO 'root '@'localhost';
+commit;
