@@ -35,14 +35,13 @@ ALTER TABLE images ADD COLUMN image_url VARCHAR(255);
 ALTER TABLE images ADD COLUMN image_path VARCHAR(255) NOT NULL;
 
 select * from users;
-
-
 CREATE USER 'root'@'localhost' IDENTIFIED BY '12345678';
 
-SELECT user, host FROM mysql.user WHERE user = 'dynamic_slider';
+-- Verify that the user 'root'@'localhost' was created
+SELECT user, host FROM mysql.user WHERE user = 'root';
 
-#Syntax: SELECT user, host FROM mysql.user;
+-- Grant all privileges to the user 'root'@'localhost'
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost';
 
-
-GRANT ALL PRIVILEGES ON . TO 'root '@'localhost';
-commit;
+-- Make sure to commit changes if your SQL environment requires it
+COMMIT;
